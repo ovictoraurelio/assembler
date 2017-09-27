@@ -1,0 +1,9 @@
+{
+  "name": "Simple Front end",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^v4.0.0-alpha.6",
+    "MDBootstrap": "^4.3.2",
+    "font-awesome": "fontawesome#^4.7.0"
+  } 
+}
