@@ -9,12 +9,13 @@
 ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ */
 
 'use strict';
-import  os from 'os';
-import  gulp from 'gulp';
+import os from 'os';
+import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
 import browserSync from 'browser-sync';
 import htmlmin from 'gulp-htmlmin';
 import bowerFiles from 'main-bower-files';
+import babel from 'gulp-babel';
 
 var $ = loadPlugins();
 var reload = browserSync.reload;
@@ -26,18 +27,26 @@ gulp.task('styles', () =>{
 });
 
 gulp.task('jshint', () => {
-  return gulp.src('app/scripts/main.js')
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'))
-    .pipe($.jshint.reporter('fail'));
+  //.on('error', $.gutil.log);
+  // return gulp.src('.tmp/**/*.js')
+  //   .pipe($.jshint())
+  //   .pipe($.jshint.reporter('jshint-stylish'))
+  //   .pipe($.jshint.reporter('fail'));
 });
 
-gulp.task('html', ['styles'], () => {
-  var assets = $.useref({searchPath: '{.tmp,app}'});
+let jsMinify = () => {
+  return gulp.src('app/scripts/*.js')
+  .pipe(babel({presets: ['env']})).pipe(gulp.dest('.tmp/scripts/')).on('end', () => {
+    gulp.src('.tmp/scripts/*.js').pipe($.uglify()).pipe(gulp.dest('dist/scripts'));
+  });
+};
 
+gulp.task('js-minify', jsMinify);
+
+gulp.task('html', ['styles'], () => {  
+  var assets = $.useref({searchPath: '{.tmp}'});  
   return gulp.src('app/*.html')
-    .pipe(assets)
-    .pipe($.if('*.js', $.uglify()))//.on('error', $.gutil.log)
+    .pipe(assets)    
     .pipe($.if('*.css', $.cleanCss({compatibility: 'ie8'})))
     .pipe($.useref())
     .pipe($.if('*.html', htmlmin({collapseWhitespace: true, removeComments: true, empty: true, quotes: true,loose: true})))
@@ -127,7 +136,8 @@ gulp.task('watch', () => {
   gulp.watch('bower.json', ['wiredep']);
 });
 
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], () => {
+gulp.task('build', ['html', 'images', 'fonts', 'extras'],  () => {  
+  const jsMin = jsMinify();
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 

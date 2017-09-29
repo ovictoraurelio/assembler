@@ -6,9 +6,19 @@
 
 /* YOUR CUSTOM STYLES */
 
-textarea{
+textarea{    
     height: 350px;
 }
 pre {
     margin-top: 10px;
+}
+.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+button{
+    border-radius: 0px !important;
+}
+a {
+    border-radius: 0px !important;
 }

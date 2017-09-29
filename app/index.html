@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title>Simple Website</title>
+    <title>Assembler MIPS</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="image_src" href="http://url-from-image.jpg"/>
     <meta property="og:image" content="http://url-from-image.jpg">
-    <meta property="og:title" content="Simple Website" />
-    <meta property="og:description" content="Description of website" />
+    <meta property="og:title" content="Assembler MIPS" />
+    <meta property="og:description" content="A generator of assembler" />
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1024">
     <meta property="og:image:height" content="1024">
@@ -30,31 +30,28 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <!--Start your project here-->
-    <div class="content">
-      <div class="row">
-          <div class="col-12" align="center">
-              <h2>Assembler files</h2>
-          </div>        
-          <div class="col-12" align="center">
+    <nav class="navbar navbar-default navbar-fixed-top" align="center">
+      <div class="container" align="center" style="display: block">
+          <h2 class="text-info" align="center">Assembler builder
+              
+          </h2>          
+      </div>
+      <a href="https://github.com/ovictoraurelio/assembler" target="new_blank" role="button" type="button" class="btn btn-primary pull-right">View on github</a>    
+    </nav>
+    <section>      
+       <div class="row">          
+          <div class="col-md-12">
             <p>
-              This version support convert the following instructions 
-                <table>                                  
-                  <tr>
-                    <td><h5>Tipo R:</h5></td><td><pre><code>add|and|jr|mfhi|mflo|sll|sllv|slt|sra|srav|srl|sub|break|rte|mult|push|nop|addu|subu|xo</code></pre></td>
-                  </tr>
-                  <tr>
-                    <td><h5>Tipo I:</h5></td><td><pre><code>addi|addiu|beq|bne|ble|bgt|beqmm|lbu|lhu|lui|lw|sb|sh|slti|sw|andi|sxori</code></pre></td>
-                  </tr>
-                  <tr>
-                    <td><h5>Tipo J:</h5></td><td><pre><code>j|jal</code></pre></td>                      
-                  </tr>
-                </table>
-                <button id="copy" class="pull-right">Copy to clipboard</button>    
+              This version supports the conversion of the following instructions:              
+              <pre><code>add|and|jr|mfhi|mflo|sll|sllv|slt|sra|srav|srl|sub|break|rte|mult|push|nop|addu|subu|xo &nbsp; <span class="badge badge-default">Tipo R</span></code></pre>
+              <pre><code>addi|addiu|beq|bne|ble|bgt|beqmm|lbu|lhu|lui|lw|sb|sh|slti|sw|andi|sxori &nbsp; <span class="badge badge-default">Tipo I</span></code></pre>
+              <pre><code>j|jal &nbsp; <span class="badge badge-default">Tipo J</span></code></pre>
             </p>                    
           </div>
-      </div>
+      </div> 
       <div class="row">
-          <div class="col-6">
+        <div class="col-md-6">
+          <div class="content">            
             <textarea id="assembly">addu $3, $4, $1
 subu $2, $4, $6
 srl $1, $2, $3
@@ -64,16 +61,19 @@ xor $13, $1, $13
 addi $5, $4, 1
 addi $4, $4, 1</textarea>
           </div>
-          <div class="col-6">
+        </div>
+        <div class="col-md-6">
+          <div class="content">
+            <button style="position: absolute; right: 30px;" id="copy" type="button" class="btn btn-success pull-right">Copy to clipboard</button>    
             <textarea id="compiled"></textarea>
           </div>
         </div>
-    </div>    
-
+      </div>
+    </section>  
+    
     <!--End your project here-->
-
     <!--Footer-->
-    <footer class="page-footer center-on-small-only mdb-color darken-4">
+    <footer class="page-footer center-on-small-only mdb-color darken-4" style="position: fixed;width:100%; bottom: 0px;">
         <!--Copyright-->
         <div class="footer-copyright">            
             <div class="container-fluid">
@@ -91,10 +91,11 @@ addi $4, $4, 1</textarea>
     <script src="bower_components/popper.js/dist/umd/popper.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/MDBootstrap/js/mdb.min.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js scripts/main.js -->
+        <!-- build:js scripts/main.js -->        
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
 

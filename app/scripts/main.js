@@ -1,6 +1,4 @@
-(() => {
-    
-        
+(() => {            
         let assembly = {
             element: $('#assembly')        
         };
@@ -210,77 +208,29 @@
             }
         };
     
-        /*  convert = ((asm) => {
-            return asm
-            // * * TIP I * * 
-            .replace(/addi/i, replacer)
-            .replace(/addiu/i, '001001')
-            .replace(/beq/i, '000100')
-            .replace(/bne/i, '000101')
-            .replace(/ble/i, '000110')
-            .replace(/bgt/i, '000111')
-            .replace(/beqmm/i, '000001')
-            .replace(/lbu/i, '100100')
-            .replace(/lhu/i, '100101')
-            .replace(/lui/i, '001111')
-            .replace(/lw/i, '100011')
-            .replace(/sb/i, '101000')
-            .replace(/sh/i, '101001')
-            .replace(/slti/i, '001010')
-            .replace(/sw/i, '101011')
-            .replace(/andi/i, '001100')
-            .replace(/sxori/i, '001110')
-            //** TIPO R **
-            .replace(/add/i, '000000')
-            .replace(/and/i, '000000')
-            .replace(/jr/i, '000000')
-            .replace(/mfhi/i, '000000')
-            .replace(/mflo/i, '000000')
-            .replace(/sll/i, '000000')
-            .replace(/sllv/i, '000000')
-            .replace(/slt/i, '000000')
-            .replace(/sra/i, '000000')
-            .replace(/srav/i, '000000')
-            .replace(/srl/i, '000000')
-            .replace(/sub/i, '000000')
-            .replace(/break/i, '000000')
-            .replace(/rte/i, '010000')
-            .replace(/mult/i, '000000')
-            .replace(/push/i, '000000')
-            .replace(/nop/i, '000000')
-            .replace(/addu/i, '000000')
-            .replace(/subu/i, '000000')
-            .replace(/xor/i, '000000')
-            ;
-        }); */
-    
-        //compiled.element.val(convert(assembly.element.val()));
+       
         
         var counter = 0;
-        function replaceEE(a,b,c){
-            //console.log(a);//console.log(b);//console.log(c);
+        function replaceEE(a,b,c){            
             return (counter++).toString().pad(3) +': '+a+'\n';
         }
-        function convert(){
-            
-            
-            let string = 'WIDTH = 8;\nDEPTH = 256;\n\nADDRESS_RADIX = DEC;\nDATA_RADIX = BIN;\n\nCONTENT\n\nBEGIN\n\n';
+        function convert(){            
+            let string = '-- GENERATED ON victoraurelio.com/assembler\n-- at '+moment().locale('pt-br').format('lll') +'\n\nWIDTH = 8;\nDEPTH = 256;\n\nADDRESS_RADIX = DEC;\nDATA_RADIX = BIN;\n\nCONTENT\n\nBEGIN\n\n';
             //let inAssembly = '';        
             counter = 0;
             assembly.element.val().split('\n').forEach((word) => {
                 
                 const inAssembly = word.toBinaryAssembly().replace(/(.{8})/g, replaceEE);
                 
-                string += ('\n--' + word + '\n' + inAssembly + '\n');
-                
+                string += ('\n--' + word + '\n' + inAssembly + '\n');                
             });
             compiled.element.val(string);
         }
         
-        $(assembly.element).on('keypress', convert);
+        $(assembly.element).on('keyup', convert);
         $(document).on('click', 'button#copy', () => {
             $(compiled.element).val($(compiled.element).val()).select();
             document.execCommand('copy');
-        });
+        });        
         convert();
     })();
