@@ -1,19 +1,12 @@
-(() => {            
-        let assembly = {
-            element: $('#assembly')        
-        };
-    
-        let compiled = {
-            element: $('#compiled') 
-        };
-    /*************  Instructions template  **********
-        _____________________________________________
-        | OP  | RS  |  RD  |  RT  |  SHAMT  |  FUNCT |
-        |  6  |  5  |  5   |   5  |     5   |    6   |
-    R:  | OP  | RS  |  RD  |  RT  |  SHAMT  |  FUNCT |
-    I:  | OP  | RS  |  RT  |        ADDRES / IMM     |
-    J:  | OP  |           TARGET / ADDRESS           |
-    */   
+(() => {                   
+        /*************  Instructions template  **********
+            _____________________________________________
+            | OP  | RS  |  RD  |  RT  |  SHAMT  |  FUNCT |
+            |  6  |  5  |  5   |   5  |     5   |    6   |
+        R:  | OP  | RS  |  RD  |  RT  |  SHAMT  |  FUNCT |
+        I:  | OP  | RS  |  RT  |        ADDRES / IMM     |
+        J:  | OP  |           TARGET / ADDRESS           |
+        */   
         String.prototype.getType = function(){
             switch(true){
                 case /(j\ |jal)/.test(this):
@@ -22,15 +15,18 @@
                 case /(addi|addiu|beq|bne|ble|bgt|beqmm|lbu|lhu|lui|lw|sb|sh|slti|sw|andi|sxori)/.test(this):
                     console.log('DO TIPO I');
                     return 'I';
-                case /(add|and|jr|mfhi|mflo|sll|sllv|slt|sra|srav|srl|sub|break|rte|mult|push|nop|addu|subu|xor)/.test(this):
+                case /(add|and|jr|mfhi|mflo|sllv|slt|srav|sub|break|rte|mult|push|nop|addu|subu|xor)/.test(this):
                     console.log('DO TIPO R');
                     return 'R';
+                case /(sll|sra|srl)/.test(this):
+                    console.log('DO TTIPO R, sll,sra,srl');
+                    return 'SR';
                 default:
                     console.log('---  TIPO und ---');
                     return false;                
             }
         };
-    
+
         String.prototype.toBin = function(){
             // this operator >>> is useful to unsinged a number.
             return (this >>> 0).toString(2);        
@@ -119,33 +115,9 @@
                 case /xor\ /.test(this):
                     return '000000';           
                 default:
-                    return false;
+                    return '000000';
             }
-        };
-        
-        String.prototype.RD = function(){
-            return this.split('$')[1].split(',')[0];
-        };
-        String.prototype.RS = function(){
-            //console.log(this.split('$'));
-            return this.split('$')[2].split(',')[0];
-        };
-        
-        String.prototype.RT = function(){        
-            return this.split('$')[3].split(',')[0];        
-        };
-    
-        String.prototype.IMMEDIATE = function(){
-            return this.split(',')[2];
-        };
-    
-        String.prototype.TARGET = function(){
-            return this.split(' ')[1];
-        };
-    
-        String.prototype.SHAMT = function(){
-            return '';
-        };
+        };        
     
         String.prototype.FUNCT = function(){
             switch(true){
@@ -190,8 +162,32 @@
                 case /xor\ /.test(this):
                     return '100110';            
                 default:
-                    return false;
+                    return '000000';
             }
+        };
+
+        String.prototype.RD = function(){
+            return this.split('$').length > 1 ? this.split('$')[1].split(',')[0]:'';
+        };
+        String.prototype.RS = function(){
+            //console.log(this.split('$'));
+            return this.split('$').length > 2 ? this.split('$')[2].split(',')[0]:'';
+        };
+        
+        String.prototype.RT = function(){        
+            return this.split('$').length > 3 ? this.split('$')[3].split(',')[0]:'';
+        };
+    
+        String.prototype.IMMEDIATE = function(){
+            return this.split(',')[2];
+        };
+    
+        String.prototype.TARGET = function(){
+            return this.split(' ')[1];
+        };
+    
+        String.prototype.SHAMT = function(){
+            return this.split(',').length > 2 ? this.split(',')[2]:'';
         };
         
         String.prototype.toBinaryAssembly = function(){
@@ -202,35 +198,66 @@
                 case 'I':
                     // OP - RS - RT - ADDRES/IMMEDIATE
                     return this.OPCODE() + this.RD().toBin().pad(5) + this.RS().toBin().pad(5) + this.IMMEDIATE().toBin().pad(16);
+                case 'SR':
+                console.log('SRL::');
+                    console.log(this.SHAMT());
+                    return this.OPCODE() + '00000' + this.RS().toBin().pad(5) + this.RD().toBin().pad(5) + this.SHAMT().toBin().pad(5) + this.FUNCT();
                 default:    
                     // OP - TARGET ADDRESS
                     return this.OPCODE() + this.TARGET().toBin().pad(26);
             }
+        };    
+       
+        let assembly = {
+            element: $('#assembly')        
         };
     
-       
-        
+        let compiled = {
+            element: $('#compiled') 
+        };
+
         var counter = 0;
-        function replaceEE(a,b,c){            
+        function replaceWithMemoryIndex(a,b,c){            
             return (counter++).toString().pad(3) +': '+a+'\n';
         }
-        function convert(){            
-            let string = '-- GENERATED ON victoraurelio.com/assembler\n-- at '+moment().locale('pt-br').format('lll') +'\n\nWIDTH = 8;\nDEPTH = 256;\n\nADDRESS_RADIX = DEC;\nDATA_RADIX = BIN;\n\nCONTENT\n\nBEGIN\n\n';
+
+        function formatBinary(title, binary){
+            binary = binary.replace(/(.{8})/g, replaceWithMemoryIndex);
+            return ('\n-- '+title+'\n' + binary + '\n');
+        }
+
+        function convertAllCode(){
+            let compiledResult = '-- GENERATED ON victoraurelio.com/assembler\n-- at '+moment().locale('pt-br').format('lll') +'\n\nWIDTH = 8;\nDEPTH = 256;\n\nADDRESS_RADIX = DEC;\nDATA_RADIX = BIN;\n\nCONTENT\n\nBEGIN\n\n';
             //let inAssembly = '';        
             counter = 0;
             assembly.element.val().split('\n').forEach((word) => {
                 
-                const inAssembly = word.toBinaryAssembly().replace(/(.{8})/g, replaceEE);
+                const inAssembly = word.toBinaryAssembly().replace(/(.{8})/g, replaceWithMemoryIndex);
                 
-                string += ('\n--' + word + '\n' + inAssembly + '\n');                
+                compiledResult += ('\n--' + word + '\n' + inAssembly + '\n');                
             });
-            compiled.element.val(string);
+                        
+            while(counter < 228){                
+                compiledResult += formatBinary('nop','00000000000000000000000000000000');
+            }
+                    
+            compiledResult += formatBinary('excpetion','00100000000111100000000000000001');            
+            compiledResult += formatBinary('exception', '00000000000000000000000000001101');                       
+            compiledResult += formatBinary('nop','00000000000000000000000000000000');        
+            compiledResult += formatBinary('exception', '00111100000111100000000000000010');                        
+            compiledResult += formatBinary('exception', '00000000000111101111010000000010');            
+            compiledResult += formatBinary('exception', '00000000000000000000000000001101');            
+            compiledResult += formatBinary('exception', '00000000000000001111000011100100');            
+
+            compiledResult += 'END;';
+
+            compiled.element.val(compiledResult);
         }
         
-        $(assembly.element).on('keyup', convert);
+        $(assembly.element).on('keyup', convertAllCode);
         $(document).on('click', 'button#copy', () => {
             $(compiled.element).val($(compiled.element).val()).select();
             document.execCommand('copy');
         });        
-        convert();
+        convertAllCode();
     })();

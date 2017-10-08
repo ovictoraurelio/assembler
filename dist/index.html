@@ -2,9 +2,9 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]--><nav class="navbar navbar-default navbar-fixed-top" align="center"><div class="container" align="center" style="display: block"><h2 class="text-info" align="center">Assembler builder</h2></div><a href="https://github.com/ovictoraurelio/assembler" target="new_blank" role="button" type="button" class="btn btn-primary pull-right">View on github</a></nav><section><div class="row"><div class="col-md-12"><p>This version supports the conversion of the following instructions:<pre><code>add|and|jr|mfhi|mflo|sll|sllv|slt|sra|srav|srl|sub|break|rte|mult|push|nop|addu|subu|xo &nbsp; <span class="badge badge-default">Tipo R</span></code></pre><pre><code>addi|addiu|beq|bne|ble|bgt|beqmm|lbu|lhu|lui|lw|sb|sh|slti|sw|andi|sxori &nbsp; <span class="badge badge-default">Tipo I</span></code></pre><pre><code>j|jal &nbsp; <span class="badge badge-default">Tipo J</span></code></pre></p></div></div><div class="row"><div class="col-md-6"><div class="content"><textarea id="assembly">addu $3, $4, $1
 subu $2, $4, $6
-srl $1, $2, $3
+srl $1, $2, 3
 add $4, $8, $16
-addiu $4, $5, $8
+addiu $4, $5, 8
 xor $13, $1, $13
 addi $5, $4, 1
 addi $4, $4, 1</textarea></div></div><div class="col-md-6"><div class="content"><button style="position: absolute; right: 30px" id="copy" type="button" class="btn btn-success pull-right">Copy to clipboard</button><textarea id="compiled"></textarea></div></div></div></section><footer class="page-footer center-on-small-only mdb-color darken-4" style="position: fixed;width:100%; bottom: 0px"><div class="footer-copyright"><div class="container-fluid">Made with ♥ by <a href="http://victoraurelio.com">ovictoraurelio</a></div></div></footer><script src="scripts/vendor.js"></script><script src="scripts/main.js"></script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
