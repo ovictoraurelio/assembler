@@ -1,12 +1,16 @@
-# Simple Frontend [![NPMversion](https://badge.fury.io/js/gulp-htmlmin.svg)](http://badge.fury.io/js/gulp-htmlmin)  [![Build Status](https://travis-ci.org/jonschlinkert/gulp-htmlmin.svg)](https://travis-ci.org/jonschlinkert/gulp-htmlmin)
+# Assembler MIPS[![NPMversion](https://badge.fury.io/js/gulp-htmlmin.svg)](http://badge.fury.io/js/gulp-htmlmin)  [![Build Status](https://travis-ci.org/jonschlinkert/gulp-htmlmin.svg)](https://travis-ci.org/jonschlinkert/gulp-htmlmin)
 
-> A simple template to a Front End project using Gulp, Bower, Sass, Jshint and Livereload
+> A simple web project that convert Assembly .s file from MIPS into the binary code
 
-# This project is focused to starters on the web development
+# This project is now in starter version, use with careful
 
-Simple and powerful frameworks are including, like:
-  Jquery, MDBootstrap (A bootstrap framework to Material Design)
-  Font-Awesome
+## How use
+
+It's very simple, just copy your .s code into the left box after this in right box your binary is ready
+
+## Contributing
+
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/ovictoraurelio/assembler/issues)
 
 ## Installation
 
@@ -26,10 +30,6 @@ npm install && bower install
 ```js
   gulp build
 ```
-
-## Contributing
-
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/ovictoraurelio/simple-frontend/issues)
 
 ## Authors
 
