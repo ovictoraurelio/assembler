@@ -198,9 +198,7 @@
                 case 'I':
                     // OP - RS - RT - ADDRES/IMMEDIATE
                     return this.OPCODE() + this.RD().toBin().pad(5) + this.RS().toBin().pad(5) + this.IMMEDIATE().toBin().pad(16);
-                case 'SR':
-                console.log('SRL::');
-                    console.log(this.SHAMT());
+                case 'SR':                
                     return this.OPCODE() + '00000' + this.RS().toBin().pad(5) + this.RD().toBin().pad(5) + this.SHAMT().toBin().pad(5) + this.FUNCT();
                 default:    
                     // OP - TARGET ADDRESS
@@ -218,7 +216,7 @@
 
         var counter = 0;
         function replaceWithMemoryIndex(a,b,c){            
-            return (counter++).toString().pad(3) +': '+a+'\n';
+            return (counter++).toString().pad(3) +': '+a+';\n';
         }
 
         function formatBinary(title, binary){
